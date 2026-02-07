@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mohit Patel's Internship Report - Weekly Progress Documentation">
+    <title>Internship Report | Mohit Patel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #0ea5e9;
+            --accent: #8b5cf6;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success: #10b981;
+            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --gradient-2: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-1);
+        }
+
+        header h1 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        header .name {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .progress-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .progress-bar {
+            background: var(--bg-card);
+            border-radius: 999px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: var(--gradient-2);
+            height: 100%;
+            width: 58%;
+            border-radius: 999px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .section-title span {
+            color: var(--primary);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Flip Card Container */
+        .flip-card {
+            height: 220px;
+            perspective: 2000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .flip-card-front {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .flip-card:hover .flip-card-front {
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .flip-card-back {
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
+            transform: rotateY(180deg);
+        }
+
+        .week-badge {
+            background: var(--gradient-1);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .week-badge.current {
+            background: var(--gradient-2);
+        }
+
+        .flip-card-front h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .flip-card-front .dates {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .flip-card-front .preview {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .flip-hint {
+            margin-top: 1rem;
+            font-size: 0.7rem;
+            color: var(--accent);
+        }
+
+        /* Fullscreen Overlay */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.9);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease;
+        }
+
+        .fullscreen-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Fullscreen Flip Card */
+        .fullscreen-card {
+            position: fixed;
+            z-index: 1000;
+            perspective: 2000px;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .fullscreen-card.active {
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: min(90vw, 800px) !important;
+            height: min(85vh, 700px) !important;
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        .fullscreen-card-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .fullscreen-card.active .fullscreen-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .fs-front,
+        .fs-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .fs-front {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .fs-back {
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
+            transform: rotateY(180deg);
+            padding: 2.5rem;
+            overflow-y: auto;
+        }
+
+        .fs-back::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .fs-back::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .fs-back::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--border-color);
+            border: none;
+            color: var(--text-primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            background: var(--primary);
+        }
+
+        .fs-back h2 {
+            font-size: 1.5rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            padding-right: 50px;
+        }
+
+        .fs-back .dates {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .fs-back .description p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .learning-outcomes {
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .learning-outcomes h4 {
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .learning-outcomes ul {
+            list-style: none;
+        }
+
+        .learning-outcomes li {
+            padding: 0.4rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .learning-outcomes li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .references {
+            margin-top: 1.5rem;
+        }
+
+        .references h4 {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .references a {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.3rem 0;
+            transition: color 0.2s;
+        }
+
+        .references a:hover {
+            color: var(--secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 0.25rem;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .fs-back {
+                padding: 1.5rem;
+            }
+
+            .fs-back h2 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Internship Report</h1>
+        <p>Weekly Progress Documentation by <span class="name">Mohit Patel</span></p>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        <div class="progress-label"><span>Week 1</span><span>Week 7 / 12</span></div>
+    </div>
+
+    <main>
+        <p class="section-title">Click on any card to <span>flip & view details</span></p>
+        <div class="cards-grid" id="cardsGrid"></div>
+    </main>
+
+    <footer>
+        <p>© 2025 Mohit Patel | <a href="https://www.linkedin.com/in/mohit-patel-860a4b372/"
+                target="_blank">LinkedIn</a> | <a href="https://github.com/mohitpatel1904" target="_blank">GitHub</a> |
+            <a href="mailto:mohit19patel04@gmail.com">Email</a>
+        </p>
+    </footer>
+
+    <div class="fullscreen-overlay" id="overlay"></div>
+    <div class="fullscreen-card" id="fsCard">
+        <div class="fullscreen-card-inner">
+            <div class="fs-front" id="fsFront"></div>
+            <div class="fs-back" id="fsBack"></div>
+        </div>
+    </div>
+
+    <script>
+        const weekData = [
+            {
+                week: "WEEK 1", title: "Orientation & Company Introduction", dates: "1 January – 4 January", preview: "Introduction to the organization, work culture, and overall workflow.",
+                description: `<p>During the first week of my internship, I was introduced to the organization, its work culture, and overall workflow. My mentor explained the types of IT services and projects handled by the company, primarily focusing on web-based applications and software development practices.</p><p>This phase helped me understand professional expectations and the objectives of my internship. The remaining days of the week were non-working days.</p>`,
+                outcomes: ["Understanding company workflow", "Familiarity with internship objectives"]
+            },
+            {
+                week: "WEEK 2", title: "Web Development Fundamentals", dates: "5 January – 11 January", preview: "Revised HTML/CSS fundamentals and built a personal portfolio website.",
+                description: `<p>In the second week, I revised HTML and CSS fundamentals as instructed by my mentor. After revising the basics, I was assigned a task to build a personal portfolio website to evaluate my frontend development skills.</p><p>I worked on page structure, layout design, and styling using CSS. Mentor feedback helped me improve responsiveness and visual consistency.</p>`,
+                outcomes: ["Strong foundation in HTML and CSS", "Understanding of website structure and styling"]
+            },
+            {
+                week: "WEEK 3", title: "Advanced CSS, Git & Database Basics", dates: "12 January – 18 January", preview: "Enhanced portfolio with advanced CSS, learned Git/GitHub, and SQL fundamentals.",
+                description: `<p>This week focused on improving my existing work and learning essential development tools. I enhanced my portfolio website using advanced CSS techniques.</p><p>I was introduced to Git and GitHub, learned repository management, and deployed my project. Additionally, I studied SQL fundamentals, practiced queries, and understood the conceptual difference between SQL and NoSQL databases.</p>`,
+                outcomes: ["Version control using GitHub", "Basic database concepts", "Code improvement through feedback"]
+            },
+            {
+                week: "WEEK 4", title: "Website Prototype Development – FitMonk Project", dates: "19 January – 25 January", preview: "Designed and developed the FitMonk fitness website prototype.",
+                description: `<p>During this week, I was assigned a task to design and develop a complete website prototype to demonstrate my frontend development skills. I worked on building a fitness-focused website named <strong>"FitMonk"</strong>, aimed at promoting a healthy lifestyle through structured content and modern UI design.</p><p>The development work included:</p><ul style="margin:1rem 0;padding-left:1.5rem;color:var(--text-secondary)"><li>Designing a multi-section website layout</li><li>Implementing navigation flow between sections</li><li>Creating UI components such as banners, cards, and call-to-action buttons</li><li>Applying CSS styling for layout alignment, spacing, and visual consistency</li></ul><p>The objective of this task was to gain hands-on experience in real-world website structure, user interface design, and content organization. At the end of the week, I presented the FitMonk website prototype to my mentor and received feedback regarding design improvements and usability.</p>`,
+                outcomes: ["Website planning and UI structuring", "Practical implementation of HTML and CSS", "Understanding user-centered design principles"],
+                references: [{ text: "🔗 Live Project - FitMonk", url: "https://mohitpatel1904.github.io/fitmonk/" }, { text: "📂 GitHub Repository", url: "https://github.com/mohitpatel1904/fitmonk" }]
+            },
+            {
+                week: "WEEK 5", title: "Website Enhancement, Deployment & Version Control", dates: "26 January – 1 February", preview: "Enhanced FitMonk website, deployed via GitHub Pages, and learned Python basics.",
+                description: `<p>In this week, I focused on enhancing and finalizing the FitMonk website based on mentor feedback received earlier. I refined the CSS styling, improved layout consistency, and optimized the website structure for better readability and user experience.</p><p>Key activities during this phase included:</p><ul style="margin:1rem 0;padding-left:1.5rem;color:var(--text-secondary)"><li>Improving responsiveness for different screen sizes</li><li>Enhancing visual hierarchy and section spacing</li><li>Testing navigation flow and UI consistency</li><li>Managing source code using Git and GitHub</li><li>Deploying the finalized website using GitHub Pages</li></ul><p>Alongside frontend development, I continued learning Python fundamentals, focusing on understanding programming logic and how Python can be applied in backend and data-handling scenarios in later stages of the internship.</p><p>This phase helped me understand the complete lifecycle of a web project, from development and testing to version control and deployment.</p>`,
+                outcomes: ["Website optimization and deployment", "Practical use of GitHub for version control", "Improved frontend development skills", "Foundational understanding of Python"],
+                references: [{ text: "🔗 Live Project - FitMonk", url: "https://mohitpatel1904.github.io/fitmonk/" }, { text: "📂 GitHub Repository", url: "https://github.com/mohitpatel1904/fitmonk" }]
+            },
+            {
+                week: "WEEK 6", title: "Chatbot System & RAG Concept Study", dates: "2 February – 8 February", preview: "Studied RAG architecture and document-based chatbot systems.",
+                description: `<p>This week marked the transition to learning about document-based chatbot systems. I was introduced to the concept of Retrieval-Augmented Generation (RAG) and studied how document retrieval and response generation work together in modern systems.</p><p>I explored the architecture and working flow of RAG-based systems through guided study and research.</p>`,
+                outcomes: ["Conceptual understanding of chatbot systems", "Knowledge of RAG architecture and workflow"],
+                references: [{ text: "Coursera - What is RAG in AI", url: "https://www.coursera.org/articles/what-is-rag-in-ai" }, { text: "AWS - Retrieval Augmented Generation", url: "https://aws.amazon.com/what-is/retrieval-augmented-generation/" }, { text: "IBM - RAG Topics", url: "https://www.ibm.com/think/topics/retrieval-augmented-generation" }, { text: "NVIDIA - RAG 101", url: "https://developer.nvidia.com/blog/rag-101-demystifying-retrieval-augmented-generation-pipelines/" }]
+            },
+            {
+                week: "WEEK 7", title: "Initial Implementation & First Review Meeting", dates: "9 February – 13 February", preview: "Document processing implementation and vector database concepts.",
+                description: `<p>During this week, I worked on initial implementation tasks related to document processing, which were discussed during the first review meeting with my mentor.</p><p>I extracted text from sample documents using Python and converted the data into a structured JSON format. Based on mentor feedback, I refined the JSON structure and committed improvements.</p><p>I was also introduced to vector database concepts and studied how embeddings are used to store and retrieve semantic information. This week mainly focused on learning and preparing the base structure required for upcoming development work.</p>`,
+                outcomes: ["Initial document processing implementation", "Data structuring using JSON", "Foundational understanding of vector databases"],
+                references: [{ text: "LlamaIndex - PDF Parsing", url: "https://www.llamaindex.ai/blog/pdf-parsing-llamaparse" }, { text: "AWS - Vector Databases", url: "https://aws.amazon.com/what-is/vector-databases/" }, { text: "Pinecone - Vector Database", url: "https://www.pinecone.io/learn/vector-database/" }, { text: "Qdrant - What is Vector DB", url: "https://qdrant.tech/articles/what-is-a-vector-database/" }]
+            },
+            {
+                week: "ONGOING", title: "Current Status & Future Work", dates: "Weeks 8 – 12 (Upcoming)", preview: "Preview of upcoming work and final project implementation.", current: true,
+                description: `<p>As of Week 7, the internship is ongoing. The upcoming weeks will focus on continued development and implementation work.</p>`,
+                outcomes: ["Improving document-processing pipelines", "Backend integration", "Enhancing system performance", "Working on advanced real-time tasks", "Final project implementation and evaluation"]
+            }
+        ];
+
+        const grid = document.getElementById('cardsGrid');
+        const overlay = document.getElementById('overlay');
+        const fsCard = document.getElementById('fsCard');
+        const fsFront = document.getElementById('fsFront');
+        const fsBack = document.getElementById('fsBack');
+
+        weekData.forEach((week, i) => {
+            grid.innerHTML += `
+                <div class="flip-card" data-index="${i}">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <span class="week-badge ${week.current ? 'current' : ''}">${week.week}</span>
+                            <h2>${week.title}</h2>
+                            <p class="dates">${week.dates}</p>
+                            <p class="preview">${week.preview}</p>
+                            <span class="flip-hint">↻ Click to flip</span>
+                        </div>
+                        <div class="flip-card-back"></div>
+                    </div>
+                </div>`;
+        });
+
+        document.querySelectorAll('.flip-card').forEach(card => {
+            card.addEventListener('click', function () {
+                const index = this.dataset.index;
+                const week = weekData[index];
+                const rect = this.getBoundingClientRect();
+
+                // Set front content
+                fsFront.innerHTML = `
+                    <span class="week-badge ${week.current ? 'current' : ''}">${week.week}</span>
+                    <h2 style="font-size:1.5rem">${week.title}</h2>
+                    <p class="dates">${week.dates}</p>`;
+
+                // Set back content
+                let backHTML = `<button class="close-btn" onclick="closeCard(event)">&times;</button>
+                    <h2>${week.week}: ${week.title}</h2>
+                    <p class="dates">${week.dates}</p>
+                    <div class="description">${week.description}</div>
+                    <div class="learning-outcomes"><h4>Learning Outcomes</h4><ul>`;
+                week.outcomes.forEach(o => backHTML += `<li>${o}</li>`);
+                backHTML += `</ul></div>`;
+                if (week.references) {
+                    backHTML += `<div class="references"><h4>📚 References</h4>`;
+                    week.references.forEach(r => backHTML += `<a href="${r.url}" target="_blank">${r.text}</a>`);
+                    backHTML += `</div>`;
+                }
+                fsBack.innerHTML = backHTML;
+
+                // Position at card location
+                fsCard.style.top = rect.top + 'px';
+                fsCard.style.left = rect.left + 'px';
+                fsCard.style.width = rect.width + 'px';
+                fsCard.style.height = rect.height + 'px';
+
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    overlay.classList.add('active');
+                    fsCard.classList.add('active');
+                });
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeCard(e) {
+            if (e) e.stopPropagation();
+            overlay.classList.remove('active');
+            fsCard.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        overlay.addEventListener('click', closeCard);
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCard(); });
+    </script>
+</body>
+
+</html>
