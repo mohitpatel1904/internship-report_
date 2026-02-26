@@ -92,7 +92,7 @@
         .progress-fill {
             background: var(--gradient-2);
             height: 100%;
-            width: 58%;
+            width: 75%;
             border-radius: 999px;
         }
 
@@ -453,7 +453,7 @@
         <div class="progress-bar">
             <div class="progress-fill"></div>
         </div>
-        <div class="progress-label"><span>Week 1</span><span>Week 7 / 12</span></div>
+        <div class="progress-label"><span>Week 1</span><span>Week 9 / 12</span></div>
     </div>
 
     <main>
@@ -518,8 +518,18 @@
                 references: [{ text: "LlamaIndex - PDF Parsing", url: "https://www.llamaindex.ai/blog/pdf-parsing-llamaparse" }, { text: "AWS - Vector Databases", url: "https://aws.amazon.com/what-is/vector-databases/" }, { text: "Pinecone - Vector Database", url: "https://www.pinecone.io/learn/vector-database/" }, { text: "Qdrant - What is Vector DB", url: "https://qdrant.tech/articles/what-is-a-vector-database/" }]
             },
             {
-                week: "ONGOING", title: "Current Status & Future Work", dates: "Weeks 8 – 12 (Upcoming)", preview: "Preview of upcoming work and final project implementation.", current: true,
-                description: `<p>As of Week 7, the internship is ongoing. The upcoming weeks will focus on continued development and implementation work.</p>`,
+                week: "WEEK 8", title: "Vector Database & Embedding Implementation", dates: "16 February – 20 February", preview: "Implemented text chunking, embeddings, and Qdrant vector storage pipeline.",
+                description: `<p>During this week, the focus was on deepening practical understanding of vector databases and text embeddings. I studied advanced concepts such as indexing, vector dimensions, and similarity measures.</p><p>I learned how textual data can be converted into numerical vector representations through embeddings, and explored text chunking methods for better semantic representation. I implemented a Python script that takes chunked text as input and converts it into embedding vectors, modifying the chunking strategy based on mentor guidance to improve quality.</p><p>I also created a Qdrant collection setup, configured it for storing vector data, and studied different distance metrics with special focus on cosine similarity. By the end of the week, I integrated all steps by storing the generated embeddings into Qdrant, completing the basic data ingestion pipeline.</p>`,
+                outcomes: ["Advanced understanding of vector databases", "Practical knowledge of text chunking and embeddings", "Hands-on experience with Qdrant setup and data storage"]
+            },
+            {
+                week: "WEEK 9", title: "Query Processing, Similarity Search & Optimization", dates: "23 February – 27 February", preview: "Built end-to-end query processing and similarity search pipeline.",
+                description: `<p>This week focused on query processing, similarity search, and optimization, building on the vector database pipeline created earlier.</p><p>I created a query-processing script that converts real-time user questions into embedding vectors and integrated it with Qdrant similarity search using cosine similarity to retrieve the most relevant results from the vector database.</p><p>I then combined all individual scripts into a single integrated pipeline, including text chunking, embedding generation, vector storage, query embedding, and similarity-based retrieval. A unified script was created that accepts a user query and returns the most relevant response.</p><p>My mentor reviewed the implementation and provided feedback. Based on the suggestions, I optimized chunk size, embedding dimensions, and similarity configuration to improve retrieval accuracy. I also tested the system on larger datasets, identifying some issues that were discussed with my mentor for further improvement.</p>`,
+                outcomes: ["Query embedding and similarity search implementation", "End-to-end vector search pipeline understanding", "System optimization based on mentor feedback", "Experience handling larger datasets"]
+            },
+            {
+                week: "ONGOING", title: "Current Status & Future Work", dates: "Weeks 10 – 12 (Upcoming)", preview: "Preview of upcoming work and final project implementation.", current: true,
+                description: `<p>As of Week 9, the internship is ongoing. The upcoming weeks will focus on continued development and implementation work.</p>`,
                 outcomes: ["Improving document-processing pipelines", "Backend integration", "Enhancing system performance", "Working on advanced real-time tasks", "Final project implementation and evaluation"]
             }
         ];
